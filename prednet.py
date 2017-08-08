@@ -102,8 +102,13 @@ class PredNet(Recurrent):
         self.row_axis = -2 if dim_ordering == 'th' else -3
         self.column_axis = -1 if dim_ordering == 'th' else -2
 
+        # set initial weights to None by default
+        self.initial_weights = None
         super(PredNet, self).__init__(**kwargs)
         self.input_spec = [InputSpec(ndim=5)]
+
+    def compute_output_shape(self, input_shape):
+        return self.get_output_shape_for(input_shape)
 
     def get_output_shape_for(self, input_shape):
         if self.output_mode == 'prediction':
@@ -127,6 +132,9 @@ class PredNet(Recurrent):
             return (input_shape[0], input_shape[1]) + out_shape
         else:
             return (input_shape[0],) + out_shape
+
+    def get_initial_state(self, x):
+        return self.get_initial_states(x)
 
     def get_initial_states(self, x):
         input_shape = self.input_spec[0].shape
