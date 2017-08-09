@@ -66,7 +66,17 @@ class PredNet(Recurrent):
                  pixel_max=1., error_activation='relu', A_activation='relu',
                  LSTM_activation='tanh', LSTM_inner_activation='hard_sigmoid',
                  output_mode='error', extrap_start_time = None,
-                 dim_ordering=K.image_dim_ordering(), **kwargs):
+                 dim_ordering=K.image_dim_ordering(),
+                 input_length=None, input_dim=None, consume_less=None, **kwargs):
+
+        # NOTE: I added these because tehy appear in the input
+        if input_length is not None:
+            print "WARNING: input length = ", input_length
+        if input_dim is not None:
+            print "WARNING: input dim = ", input_dim
+        if consume_less is not None:
+            print "WARNING: consume less = ", consume_less
+
         self.stack_sizes = stack_sizes
         self.nb_layers = len(stack_sizes)
         assert len(R_stack_sizes) == self.nb_layers, 'len(R_stack_sizes) must equal len(stack_sizes)'

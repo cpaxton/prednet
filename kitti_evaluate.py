@@ -45,7 +45,7 @@ input_shape = list(train_model.layers[0].batch_input_shape[1:])
 input_shape[0] = nt
 inputs = Input(shape=tuple(input_shape))
 predictions = test_prednet(inputs)
-test_model = Model(input=inputs, output=predictions)
+test_model = Model([inputs], [predictions])
 
 test_generator = SequenceGenerator(test_file, test_sources, nt, sequence_start_mode='unique', dim_ordering=dim_ordering)
 X_test = test_generator.create_all()
@@ -72,6 +72,7 @@ plot_save_dir = os.path.join(RESULTS_SAVE_DIR, 'prediction_plots/')
 if not os.path.exists(plot_save_dir): os.mkdir(plot_save_dir)
 plot_idx = np.random.permutation(X_test.shape[0])[:n_plot]
 for i in plot_idx:
+    print "plot", i
     for t in range(nt):
         plt.subplot(gs[t])
         plt.imshow(X_test[i,t], interpolation='none')
